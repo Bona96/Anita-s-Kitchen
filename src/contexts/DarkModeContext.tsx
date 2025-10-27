@@ -20,14 +20,14 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return 'light';
   });
 
-  const setTheme = useCallback((t: Theme) => {
-    setThemeState(t);
-    try {
-      localStorage.setItem('theme', t);
-    } catch {}
-  }, []);
-
-  //const toggleTheme = useCallback(() => setThemeState((t) => (t === 'dark' ? 'light' : 'dark')), []);
+    const setTheme = useCallback((t: Theme) => {
+      setThemeState(t);
+      try {
+        localStorage.setItem('theme', t);
+      } catch {}
+    }, []);
+   
+    const toggleTheme = useCallback(() => setThemeState((t) => (t === 'dark' ? 'light' : 'dark')), []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -35,7 +35,7 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     else root.classList.remove('dark');
   }, [theme]);
 
-  const value = useMemo(() => ({ theme, toggleTheme: () => setThemeState((t) => (t === 'dark' ? 'light' : 'dark')), setTheme }), [theme, setTheme]);
+  const value = useMemo(() => ({ theme, toggleTheme, setTheme }), [theme, toggleTheme, setTheme]);
 
   return <DarkModeContext.Provider value={value}>{children}</DarkModeContext.Provider>;
 };
