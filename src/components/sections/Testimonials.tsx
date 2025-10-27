@@ -52,6 +52,8 @@ const Testimonials: React.FC = () => {
 
   const current = testimonials[index];
 
+  const AUTO_ADVANCE = 4500; // ms
+
   return (
     <section id="testimonials" className="py-20 bg-white dark:bg-gray-900">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -66,7 +68,7 @@ const Testimonials: React.FC = () => {
         </motion.h2>
 
         <div
-          className="relative h-56"
+          className="relative h-56 touch-pan-y"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onFocus={() => setPaused(true)}
@@ -84,12 +86,32 @@ const Testimonials: React.FC = () => {
               animate="center"
               exit="exit"
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -50) paginate(1);
+                if (info.offset.x > 50) paginate(-1);
+              }}
+              whileDrag={{ cursor: 'grabbing' }}
               className="absolute inset-0 p-6 bg-linear-to-br from-orange-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-2xl border border-orange-50 dark:border-gray-800 flex flex-col items-center justify-center"
             >
               <p className="text-gray-700 dark:text-gray-200 text-lg mb-4">“{current.text}”</p>
               <footer className="text-sm text-gray-500 dark:text-gray-400">— {current.name}</footer>
             </motion.blockquote>
           </AnimatePresence>
+
+          {/* progress bar */}
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-2/3 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div
+              key={index}
+              style={{
+                width: '0%',
+                height: '100%',
+                background: 'linear-gradient(90deg,#fb923c,#f97316)',
+                animation: paused ? 'none' : `tk-fill ${AUTO_ADVANCE}ms linear forwards`
+              }}
+            />
+          </div>
 
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
             <button

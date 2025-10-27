@@ -8,6 +8,11 @@
   --color-neo-brutalism-blue : '#2b77e7';
   --color-neo-brutalism-white : '#fff';
 }
+
+@keyframes tk-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
 :root {
   --blue-rgb: 237 245 255;
   --green-rgb: 125 161 35;
