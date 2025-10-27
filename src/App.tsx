@@ -18,7 +18,7 @@ function App() {
       </main>
       <footer className="py-8 text-center text-sm ">
         <div className="py-8 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Anita's Kitchen — Made with ❤️
+          © {new Date().getFullYear()} Anita's Kitchen
         </div>
           Developed by:
         <a 
