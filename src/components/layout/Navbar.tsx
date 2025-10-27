@@ -1,0 +1,104 @@
+import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navVariants: Variants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const menuVariants: Variants = {
+    closed: { opacity: 0, x: '100%' },
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  return (
+    <motion.nav
+      initial="hidden"
+      animate="visible"
+      variants={navVariants}
+      className="fixed w-full z-50 bg-white/80 backdrop-blur-sm"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <motion.div
+            whileHover={{ scale: 1.04, rotateX: -4 }}
+            className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-500"
+            style={{ WebkitBackgroundClip: 'text' }}
+          >
+            Anita's Kitchen
+          </motion.div>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex space-x-8">
+            {['Home', 'Menu', 'About', 'Testimonials', 'Contact'].map((item) => (
+              <motion.a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                whileHover={{ scale: 1.1 }}
+                className="text-gray-800 hover:text-orange-600 transition-colors"
+              >
+                {item}
+              </motion.a>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-gray-800"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <motion.div
+        initial="closed"
+        animate={isOpen ? 'open' : 'closed'}
+        variants={menuVariants}
+        className={`md:hidden fixed inset-y-0 right-0 w-64 bg-white shadow-lg p-6 ${
+          isOpen ? 'block' : 'hidden'
+        }`}
+      >
+        <div className="flex flex-col space-y-4">
+          {['Home', 'Menu', 'About', 'Testimonials', 'Contact'].map((item) => (
+            <motion.a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              whileHover={{ scale: 1.05 }}
+              className="text-gray-800 hover:text-orange-600 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              {item}
+            </motion.a>
+          ))}
+        </div>
+      </motion.div>
+    </motion.nav>
+  );
+};
+
+export default Navbar;
