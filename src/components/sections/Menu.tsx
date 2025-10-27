@@ -1,107 +1,127 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import type { Mesh } from 'three';
+import { useRef, useState, useEffect } from 'react';
+import { menuItems } from '../../assets/constants/constants';
 
-interface MenuItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-}
 
-const menuItems: MenuItem[] = [
-  {
-    id: 1,
-    name: "Classic Burger",
-    description: "Juicy beef patty with fresh vegetables",
-    price: 12.99,
-    category: "Main Course",
-    image: "/menu/burger.jpg"
-  },
-  {
-    id: 2,
-    name: "Caesar Salad",
-    description: "Fresh romaine lettuce with our special dressing",
-    price: 8.99,
-    category: "Starters",
-    image: "/menu/salad.jpg"
-  },
-  // Add more menu items as needed
-];
-
-const Menu = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
+const FoodModel = () => {
+  const meshRef = useRef<Mesh>(null);
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      if (meshRef.current) meshRef.current.rotation.y += 0.005;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   return (
-    <section id="menu" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Menu</h2>
-          <p className="text-xl text-gray-600">Discover our delicious offerings</p>
-        </motion.div>
+    <mesh ref={meshRef} position={[0, -0.3, 0]}>
+      <boxGeometry args={[1.6, 0.4, 1]} />
+      <meshStandardMaterial color={'#ffcc99'} metalness={0.2} roughness={0.6} />
+    </mesh>
+  );
+};
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {menuItems.map((item) => (
-            <motion.div
-              key={item.id}
-              variants={itemVariants}
-              whileHover={{ scale: 1.03, rotateX: -4, rotateY: 6 }}
-              transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-              className="bg-white rounded-xl shadow-2xl overflow-hidden transform-gpu will-change-transform"
+const variants = {
+  enter: (direction: number) => ({ x: direction > 0 ? 300 : -300, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (direction: number) => ({ x: direction > 0 ? -300 : 300, opacity: 0 })
+};
+
+const Menu = () => {
+  const [[index, direction], setIndex] = useState<[number, number]>([0, 0]);
+
+  const paginate = (newDirection: number) => {
+    setIndex(([i]) => {
+      const next = (i + newDirection + menuItems.length) % menuItems.length;
+      return [next, newDirection];
+    });
+  };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') paginate(1);
+      if (e.key === 'ArrowLeft') paginate(-1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const item = menuItems[index];
+
+  return (
+    <section id="menu" className="py-20 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-4xl font-bold mb-2">Our Menu — Taste of Uganda</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300">Swipe or use arrows to browse — one dish at a time.</p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              aria-label="Previous"
+              onClick={() => paginate(-1)}
+              className="p-2 rounded-full bg-white/80 dark:bg-gray-800 shadow hover:scale-105 transition"
             >
-              <div className="relative h-48">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-semibold text-gray-900">{item.name}</h3>
-                  <span className="text-lg font-bold text-orange-600">
-                    ${item.price.toFixed(2)}
-                  </span>
+              ‹
+            </button>
+            <button
+              aria-label="Next"
+              onClick={() => paginate(1)}
+              className="p-2 rounded-full bg-white/80 dark:bg-gray-800 shadow hover:scale-105 transition"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+
+        <div className="relative h-96">
+          <AnimatePresence custom={direction} initial={false} mode="wait">
+            <motion.article
+              key={index}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="absolute inset-0 flex flex-col md:flex-row items-center gap-8 bg-linear-to-br rounded-2xl p-6 shadow-2xl"
+            >
+              <div className="w-full md:w-1/2">
+                <h3 className="text-3xl font-bold mb-2">{item.name}</h3>
+                <p className="text-gray-700 dark:text-gray-200 mb-4">{item.description}</p>
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-2xl font-semibold text-orange-600">${item.price.toFixed(2)}</span>
+                  <span className="inline-block bg-orange-100 dark:bg-orange-800/30 dark:text-orange-300 text-orange-800 px-3 py-1 rounded-full text-sm">{item.category}</span>
                 </div>
-                <p className="text-gray-600 mb-4">{item.description}</p>
-                <span className="inline-block bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full">
-                  {item.category}
-                </span>
+
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Pair with</h4>
+                  <div className="flex flex-wrap gap-3">
+                    {item.drinks.map((d) => (
+                      <span key={d} className="px-3 py-1 rounded-full bg-white dark:bg-gray-800 text-sm border border-gray-100 dark:border-gray-700">{d}</span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+
+              <div className="w-full md:w-1/2 h-72 rounded-xl overflow-hidden bg-white/60 dark:bg-gray-800/60 flex items-center justify-center">
+                <Canvas>
+                  <ambientLight intensity={0.8} />
+                  <directionalLight position={[2, 5, 2]} intensity={0.8} />
+                  <PerspectiveCamera makeDefault position={[0, 1.2, 3]} />
+                  <OrbitControls enableZoom={false} enablePan={false} />
+                  <FoodModel />
+                </Canvas>
+              </div>
+            </motion.article>
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );

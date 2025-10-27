@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useState } from 'react';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { theme, toggleTheme } = useDarkMode();
 
   const navVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
@@ -30,18 +32,20 @@ const Navbar = () => {
     }
   };
 
+  // theme and toggleTheme come from DarkModeContext
+
   return (
     <motion.nav
       initial="hidden"
       animate="visible"
       variants={navVariants}
-      className="fixed w-full z-50 bg-white/80 backdrop-blur-sm"
+      className="fixed w-full z-50 bg-gray-200 dark:bg-pink-800 backdrop-blur-sm"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <motion.div
             whileHover={{ scale: 1.04, rotateX: -4 }}
-            className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-500"
+            className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-orange-500 via-pink-500 to-yellow-500"
             style={{ WebkitBackgroundClip: 'text' }}
           >
             Anita's Kitchen
@@ -59,6 +63,18 @@ const Navbar = () => {
                 {item}
               </motion.a>
             ))}
+          </div>
+
+          {/* Theme toggle (desktop) */}
+          <div className="hidden md:flex items-center gap-3">
+            <motion.button
+              onClick={toggleTheme}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Toggle theme"
+              className="p-2 rounded-full bg-white/0 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </motion.button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,6 +111,14 @@ const Navbar = () => {
               {item}
             </motion.a>
           ))}
+          <div className="mt-6">
+            <button
+              onClick={toggleTheme}
+              className="w-full py-2 px-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-center"
+            >
+              Toggle theme
+            </button>
+          </div>
         </div>
       </motion.div>
     </motion.nav>

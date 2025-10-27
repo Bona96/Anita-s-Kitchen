@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-20 bg-gradient-to-b from-orange-50 to-white">
+  <section id="contact" className="py-20 bg-linear-to-b from-orange-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -11,8 +11,8 @@ const Contact = () => {
           viewport={{ once: true }}
           className="text-center mb-8"
         >
-          <h2 className="text-3xl font-bold text-gray-900">Get in touch</h2>
-          <p className="text-gray-600">Have a question or want to reserve a table? Send us a message.</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Get in touch</h2>
+          <p className="text-gray-600 dark:text-gray-300">Have a question or want to reserve a table? Send us a message.</p>
         </motion.div>
 
         <motion.form
@@ -20,7 +20,7 @@ const Contact = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-white/30"
+          className="bg-white/70 dark:bg-gray-800/60 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-white/30 dark:border-gray-700"
           onSubmit={(e) => e.preventDefault()}
         >
           <div className="grid grid-cols-1 gap-4">

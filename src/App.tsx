@@ -4,30 +4,20 @@ import Menu from './components/sections/Menu';
 import About from './components/sections/About';
 import Testimonials from './components/sections/Testimonials';
 import Contact from './components/sections/Contact';
+import Footer from './components/layout/Footer';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-gray-200 dark:bg-amber-800 text-gray-900 dark:text-gray-200">
       <Navbar />
-      <main>
+      <main className="pt-16 h-full">
         <Hero />
         <Menu />
         <About />
         <Testimonials />
         <Contact />
       </main>
-      <footer className="py-8 text-center text-sm ">
-        <div className="py-8 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Anita's Kitchen
-        </div>
-          Developed by:
-        <a 
-          className='p-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-md ml-2'
-          href="https://knihtdigitalsolutions.vercel.app"
-        >
-          KNiHT Digital Solutions
-        </a>
-      </footer>
+      <Footer />
     </div>
   );
 }

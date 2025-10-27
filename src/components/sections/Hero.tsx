@@ -17,7 +17,7 @@ const FoodModel = () => {
 
 const Hero = () => {
   return (
-    <section id="home" className="h-screen relative overflow-hidden bg-gradient-to-br from-orange-100 to-white">
+  <section id="home" className="h-screen relative overflow-hidden bg-linear-to-br from-orange-100 to-white dark:from-gray-900 dark:to-black">
       <div className="absolute inset-0">
         <Canvas className="w-full h-full">
           <ambientLight intensity={0.5} />
@@ -34,7 +34,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-5xl md:text-7xl font-bold text-gray-900 mb-6"
+            className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-gray-100 mb-6"
           >
             Welcome to Anita's Kitchen
           </motion.h1>
@@ -43,7 +43,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-            className="text-xl md:text-2xl text-gray-600 mb-8"
+            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8"
           >
             Experience the finest culinary delights in town
           </motion.p>
