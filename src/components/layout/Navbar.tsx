@@ -39,13 +39,13 @@ const Navbar = () => {
       initial="hidden"
       animate="visible"
       variants={navVariants}
-      className="fixed w-full z-50 bg-gray-200 dark:bg-pink-800 backdrop-blur-sm"
+      className="fixed w-full z-50 backdrop-blur-sm bg-linear-to-b from-violet-300/70 to-cyan-400/30 dark:from-red-950/30 dark:to-cyan-500/30 shadow-md"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <motion.div
             whileHover={{ scale: 1.04, rotateX: -4 }}
-            className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-orange-500 via-pink-500 to-yellow-500"
+            className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-red-950 via-cyan-500 to-violet-500"
             style={{ WebkitBackgroundClip: 'text' }}
           >
             Anita's Kitchen
@@ -58,7 +58,7 @@ const Navbar = () => {
                 key={item}
                 href={`#${item.toLowerCase()}`}
                 whileHover={{ scale: 1.1 }}
-                className="text-gray-800 hover:text-orange-600 transition-colors"
+                className="text-gray-800 dark:text-gray-200  transition-colors hover:bg-linear-to-r hover:from-red-950 hover:to-cyan-800 hover:text-white px-3 py-2 rounded-md font-medium"
               >
                 {item}
               </motion.a>

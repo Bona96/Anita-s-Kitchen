@@ -27,7 +27,10 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       } catch {}
     }, []);
    
-    const toggleTheme = useCallback(() => setThemeState((t) => (t === 'dark' ? 'light' : 'dark')), []);
+    // Ensure toggling the theme also updates localStorage by using setTheme
+    const toggleTheme = useCallback(() => {
+      setTheme(theme === 'dark' ? 'light' : 'dark');
+    }, [theme, setTheme]);
 
   useEffect(() => {
     const root = document.documentElement;

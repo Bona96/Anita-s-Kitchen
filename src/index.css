@@ -2,11 +2,89 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
+/* Design tokens: color variables for light and dark themes.
+   Use these variables in Tailwind via tailwind.config.cjs so the whole project
+   follows cyan / gray / maroon / violet palette and supports dark mode. */
+
+:root {
+  /* font / misc */
   --font-poppins: "Poppins", serif;
-  --shadow-card: '0px 1px 2px 0px rgba(0, 0, 0, 0.05)';
-  --color-neo-brutalism-blue : '#2b77e7';
-  --color-neo-brutalism-white : '#fff';
+  --shadow-card: 0px 1px 2px 0px rgba(0,0,0,0.05);
+
+  /* Cyan palette (primary accent) */
+  --color-cyan-50: #f0fbff;
+  --color-cyan-100: #e0f7ff;
+  --color-cyan-200: #bfeeff;
+  --color-cyan-500: #00c6ff; /* bright cyan */
+  --color-cyan-700: #0072ff;
+  --color-cyan-900: #004ea3;
+
+  /* Gray neutrals */
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-500: #6b7280;
+  --color-gray-700: #374151;
+  --color-gray-900: #111827;
+
+  /* Maroon accent */
+  --color-maroon-50: #fff5f6;
+  --color-maroon-100: #ffe7ea;
+  --color-maroon-200: #ffc0c8;
+  --color-maroon-500: #8b1e2e;
+  --color-maroon-700: #6a1623;
+  --color-maroon-900: #3a0b11;
+
+  /* Violet accent */
+  --color-violet-50: #f7f5ff;
+  --color-violet-100: #efeaff;
+  --color-violet-200: #ddd5ff;
+  --color-violet-500: #6b21a8;
+  --color-violet-700: #4c0966;
+  --color-violet-900: #2b0036;
+
+  /* Tan / warm neutrals */
+  --color-tan-50: #fffaf5;
+  --color-tan-100: #fff0e6;
+  --color-tan-200: #ffe1c9;
+  --color-tan-500: #d8b99a;
+  --color-tan-700: #b89273;
+  --color-tan-900: #7a5a3e;
+
+  /* legacy / rgb helpers (optional) */
+  --blue-rgb: 237 245 255;
+  --green-rgb: 125 161 35;
+}
+
+.dark {
+  /* Dark theme variable overrides */
+  --color-cyan-50: #c6ebf8;
+  --color-cyan-100: #a9def1;
+  --color-cyan-200: #69c3e3;
+  --color-cyan-500: #1c809b;
+  --color-cyan-700: #116482;
+  --color-cyan-900: #002734;
+
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #d4d4d6;
+  --color-gray-200: #b8b8b9;
+  --color-gray-500: #707173;
+  --color-gray-700: #515355;
+  --color-gray-900: #232221;
+
+  --color-maroon-50: #ffdfe2;
+  --color-maroon-100: #ff9ea7;
+  --color-maroon-200: #b76a73;;
+  --color-maroon-500: #552224;
+  --color-maroon-700: #552224;
+  --color-maroon-900: #2a0a0f;
+
+  --color-violet-50: #f6effb;
+  --color-violet-100: #d1b3e6;
+  --color-violet-200: #9b6db9;
+  --color-violet-500: #3d0b4c;
+  --color-violet-700: #2b0638;
+  --color-violet-900: #1b0226;
 }
 
 @keyframes tk-fill {
@@ -37,35 +115,56 @@ body:has(.card[data-color="blue"]:hover) {
 
 body:has(.card[data-color="green"]:hover) {
   background-color: rgb(var(--green-rgb) / 25%);
+
 }
 
 @layer utilities {
+  .neutral-bg {
+    @apply bg-neutral-800;
+  }
+
   .max-container {
-    @apply max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)];
+    @apply max-w-5xl mx-auto sm:p-16 pb-12 pt-[126px]! px-8 min-h-[calc(100vh-80px)];
   }
 
   .head-text {
-    @apply sm:text-5xl text-3xl font-semibold sm:leading-snug font-poppins;
+    @apply sm:text-5xl text-3xl font-semibold sm:leading-snug;
+    font-family: var(--font-poppins);
   }
 
   .subhead-text {
-    @apply font-semibold sm:text-3xl text-xl relative font-poppins;
+    @apply font-semibold sm:text-3xl text-xl relative;
+    font-family: var(--font-poppins);
   }
 
   .blue-gradient_text {
-    @apply bg-gradient-to-r from-[#00c6ff] to-[#0072ff] bg-clip-text text-transparent;
+    /* gradient text using cyan tokens */
+    background-image: linear-gradient(90deg, var(--color-cyan-100), var(--color-cyan-700));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .input {
-    @apply bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2.5 font-normal shadow-card;
+    @apply bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5 mt-2.5 font-normal;
+    box-shadow: var(--shadow-card);
   }
 
   .textarea {
-    @apply block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 focus:ring-blue-500 focus:border-blue-500 mt-2.5 font-normal shadow-card;
+    @apply block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 mt-2.5 font-normal;
+    box-shadow: var(--shadow-card);
   }
 
   .btn {
-    @apply text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
+    /* primary button using cyan gradient */
+    color: white;
+    background-image: linear-gradient(90deg, var(--color-cyan-500), var(--color-cyan-700));
+    box-shadow: var(--shadow-card);
+    border-radius: .5rem;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    padding: .625rem 1.25rem;
   }
 
   .header {
@@ -81,12 +180,13 @@ body:has(.card[data-color="green"]:hover) {
   }
 
   .info-box {
-    @apply mx-5 relative flex text-white flex-col gap-3 max-w-2xl bg-neo-brutalism-blue pt-4 pb-12 px-8;
+    @apply mx-5 relative flex text-white flex-col gap-3 max-w-2xl pt-4 pb-12 px-8;
+    background-color: var(--color-maroon-500);
   }
 
   .neo-btn {
     border-radius: 0.5rem; /* rounded-lg */
-    color: #3b82f6; /* text-blue-500 */
+    color: var(--color-cyan-700);
     text-align: center;
     font-weight: 600; /* font-semibold */
     width: 90%;
@@ -134,6 +234,35 @@ body:has(.card[data-color="green"]:hover) {
       text-align: center; /* max-md:text-center */
     }
   }
+}
+
+/* Compatibility utilities (define theme utilities without tailwind config)
+   These provide the most-used custom utilities (font and color tokens) so the
+   project can run without a tailwind config file. Add more as needed. */
+@layer utilities {
+  /* font utility used in index.css */
+  .font-poppins { font-family: var(--font-poppins) !important; }
+
+  /* solid background helpers */
+  .bg-cyan-500 { background-color: var(--color-cyan-500) !important; }
+  .bg-cyan-600 { background-color: var(--color-cyan-700) !important; }
+  .bg-cyan-700 { background-color: var(--color-cyan-700) !important; }
+
+  .bg-maroon-500 { background-color: var(--color-maroon-500) !important; }
+  .bg-maroon-700 { background-color: var(--color-maroon-700) !important; }
+
+  /* text color helpers */
+  .text-maroon-700 { color: var(--color-maroon-700) !important; }
+  .text-maroon-200 { color: var(--color-maroon-200) !important; }
+
+  /* Gradient helpers using Tailwind's gradient variables */
+  .from-cyan-500 { --tw-gradient-from: var(--color-cyan-500); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(255,255,255,0)); }
+  .to-cyan-700 { --tw-gradient-to: var(--color-cyan-700); }
+
+  /* ring color helper for focus:ring-cyan-300 usage (approximate) */
+  .ring-cyan-300 { --tw-ring-color: rgba(0, 198, 255, 0.45); }
+  /* small shadow helper used across the project (@apply shadow-card) */
+  .shadow-card { box-shadow: var(--shadow-card); }
 }
 
 .glassmorphism {

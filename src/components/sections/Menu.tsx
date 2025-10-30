@@ -227,7 +227,7 @@ const Menu = () => {
   // layout UI
   const LayoutSwitcher = () => (
     <div className="flex items-center gap-2">
-      {(['slider', 'cards', 'grid', 'masonry', 'table'] as LayoutMode[]).map((m) => (
+      {(['cards', 'slider', 'grid', 'masonry', 'table'] as LayoutMode[]).map((m) => (
         <button
           key={m}
           onClick={() => setLayout(m)}

@@ -1,69 +1,54 @@
 import { motion } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import type { Mesh } from 'three';
-import { useRef } from 'react';
+import BackgroundLayer from "../../components/layout/BackgroundLayer";
 
-const FoodModel = () => {
-  const meshRef = useRef<Mesh>(null);
-
-  return (
-    <mesh ref={meshRef}>
-      <sphereGeometry args={[1, 32, 32]} />
-      <meshStandardMaterial color="#ff6b6b" metalness={0.5} roughness={0.5} />
-    </mesh>
-  );
-};
 
 const Hero = () => {
+  // Background interactivity is provided by BackgroundLayer (variant-driven)
+
   return (
-  <section id="home" className="h-screen relative overflow-hidden bg-linear-to-br from-orange-100 to-white dark:from-gray-900 dark:to-black">
-      <div className="absolute inset-0">
-        <Canvas className="w-full h-full">
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-          <OrbitControls enableZoom={false} />
-          <FoodModel />
-        </Canvas>
+    <section id="home" className="h-screen relative overflow-hidden bg-linear-to-br from-cyan-300 to-gray-300 dark:from-gray-800 dark:to-violet-800">
+      <main className="relative z-10 h-full flex items-center justify-center">
+      {/* Grid background */}
+      <BackgroundLayer variant="hero" className="z-0" />
+      <div className="pointer-events-none absolute inset-0 flex flex-col gap-5 items-center justify-center z-10 mb-10 font-poppins">
+        <motion.h1
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-6xl text-neutral-100 font-black uppercase tracking-tight"
+        >
+          Hi
+        </motion.h1>
+        <motion.h1
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-6xl font-black uppercase tracking-tight text-transparent bg-clip-text bg-linear-to-r from-violet-600 via-gray-600 to-yellow-800 dark:from-violet-100 dark:via-cyan-100 dark:to-gray-100"
+        >
+          Anita here👋
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="text-white w-1/2 text-xl text-center tracking-wide"
+        >
+          You are welcome to my kitchen! Join my growing community of food lovers.
+        </motion.p>
+        <motion.a
+          href={`#menu`}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          className="text-neutral-100 rounded-full text-3xl p-5 border border-cyan-500 pointer-events-auto bg-linear-to-b from-red-950 to-cyan-800 dark:from-red-950 dark:to-cyan-800"
+        >
+          Our Menu
+        </motion.a>
       </div>
-      
-      <div className="relative z-10 h-full flex items-center justify-center">
-        <div className="text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-gray-100 mb-6"
-          >
-            Welcome to Anita's Kitchen
-          </motion.h1>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8"
-          >
-            Experience the finest culinary delights in town
-          </motion.p>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
-          >
-            <a
-              href="#menu"
-              className="inline-block bg-orange-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-orange-700 transition-colors"
-            >
-              Explore Menu
-            </a>
-          </motion.div>
-        </div>
-      </div>
+      </main>
     </section>
   );
 };
+
 
 export default Hero;

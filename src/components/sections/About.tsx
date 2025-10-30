@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import type { Mesh } from 'three';
 import { useRef } from 'react';
+import BackgroundLayer from '../layout/BackgroundLayer';
 
 const PlateModel = () => {
   const ref = useRef<Mesh>(null);
@@ -16,7 +17,8 @@ const PlateModel = () => {
 
 const About = () => {
   return (
-  <section id="about" className="py-24 bg-linear-to-b from-white to-orange-50 dark:from-gray-900 dark:to-gray-800">
+    <section id="about" className="py-24 bg-linear-to-r from-violet-300 to-cyan-100 dark:from-cyan-900 dark:to-violet-800">
+      <BackgroundLayer variant="hero" className="z-0" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -26,7 +28,7 @@ const About = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">About Anita</h2>
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
+            <p className="text-lg text-gray-800 dark:text-gray-200 mb-4">
               Anita's Kitchen is where heart and flavour meet. Family recipes, fresh
               ingredients, and a love for sharing meals made with care.
             </p>
