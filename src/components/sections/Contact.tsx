@@ -50,10 +50,10 @@ const Contact = () => {
           className="text-center mb-8"
         >
           <h2 className="text-3xl font-bold text-maroon-700 dark:text-maroon-200">Get in touch</h2>
-          <p className="text-gray-600 dark:text-gray-300">Have a question or want to reserve a table? Send us a message and we'll get back to you shortly.</p>
+          <p className="text-gray-600 dark:text-gray-300">Place your order now, Send us a message and we'll get back to you shortly.</p>
         </motion.div>
 
-        {/* Map */}
+        {/* Map
         <div className="mb-8 rounded-2xl overflow-hidden shadow-lg">
           <iframe
             title="Anita's Kitchen location"
@@ -62,7 +62,7 @@ const Contact = () => {
             style={{ border: 0 }}
             loading="lazy"
           />
-        </div>
+        </div> */}
 
         <motion.form
           ref={formRef}

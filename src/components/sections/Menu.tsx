@@ -2,9 +2,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Html } from '@react-three/drei';
 import type { Mesh } from 'three';
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useLoader } from '@react-three/fiber';
-import { TextureLoader, VideoTexture, LinearFilter } from 'three';
+import { TextureLoader } from 'three';
 import { menuItems } from '../../assets/constants/constants';
 import type { MenuItem } from '../../assets/constants/constants';
 
@@ -32,100 +32,7 @@ const ImageFoodCard = ({ src }: { src: string }) => {
   );
 };
 
-// Video variant: accepts a filename (relative to assets/media) and a quality selector
-const VideoFoodCard = ({ filename, quality = 'auto' }: { filename: string; quality?: 'auto' | '720' | '1080' }) => {
-  const meshRef = useRef<Mesh | null>(null);
-  const [selectedSrc, setSelectedSrc] = useState<string>(() => {
-    try {
-      return new URL(`../../assets/media/${filename}`, import.meta.url).href;
-    } catch (e) {
-      return `/src/assets/media/${filename}`;
-    }
-  });
-
-  // Try to prefer quality-specific filename when requested (e.g., name-720.mp4)
-  useEffect(() => {
-    let isMounted = true;
-    (async () => {
-      if (quality === 'auto') {
-        try {
-          const u = new URL(`../../assets/media/${filename}`, import.meta.url).href;
-          if (isMounted) setSelectedSrc(u);
-        } catch (e) {
-          if (isMounted) setSelectedSrc(`/src/assets/media/${filename}`);
-        }
-        return;
-      }
-
-      const candidate = filename.replace(/\.mp4$/i, `-${quality}.mp4`);
-      try {
-        const url = new URL(`../../assets/media/${candidate}`, import.meta.url).href;
-        // Check quickly if resource is accessible (HEAD)
-        try {
-          const res = await fetch(url, { method: 'HEAD' });
-          if (res.ok) {
-            if (isMounted) setSelectedSrc(url);
-            return;
-          }
-        } catch (err) {
-          // network or CORS may block HEAD; we'll fallback to original below
-        }
-      } catch (e) {
-        // invalid url, ignore
-      }
-
-      // fallback to original
-      try {
-        const u = new URL(`../../assets/media/${filename}`, import.meta.url).href;
-        if (isMounted) setSelectedSrc(u);
-      } catch (e) {
-        if (isMounted) setSelectedSrc(`/src/assets/media/${filename}`);
-      }
-    })();
-    return () => {
-      isMounted = false;
-    };
-  }, [filename, quality]);
-
-  // create and play video element
-  const videoEl = useMemo(() => {
-    const v = document.createElement('video');
-    v.crossOrigin = 'anonymous';
-    v.muted = true;
-    v.loop = true;
-    v.playsInline = true;
-    v.autoplay = true;
-    return v;
-  }, []);
-
-  useEffect(() => {
-    if (!videoEl) return;
-    videoEl.src = selectedSrc;
-    videoEl.load();
-    videoEl.play().catch(() => {});
-  }, [selectedSrc, videoEl]);
-
-  const videoTexture = useMemo(() => {
-    const vt = new VideoTexture(videoEl as HTMLVideoElement);
-    vt.minFilter = LinearFilter;
-    vt.magFilter = LinearFilter;
-    return vt;
-  }, [videoEl]);
-
-  useFrame(({ clock }) => {
-    if (!meshRef.current) return;
-    const t = clock.getElapsedTime();
-    meshRef.current.position.y = Math.sin(t * 0.8) * 0.1 - 0.04;
-    meshRef.current.rotation.y = Math.sin(t * 0.5) * 0.06;
-  });
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      <planeGeometry args={[2.2, 1.4]} />
-      <meshStandardMaterial map={videoTexture as any} metalness={0.15} roughness={0.6} toneMapped={false} />
-    </mesh>
-  );
-};
+// (VideoFoodCard removed — native <video> and ImageFoodCard are used instead in the slider/modal for reliability)
 
 // legacy variants removed (replaced by sliderVariants)
 
@@ -163,9 +70,24 @@ const Menu = () => {
     setIndex([p * itemsPerPage, 0]);
   };
 
+  // modal state for full-size media preview
+  const [modalItem, setModalItem] = useState<{ type: 'image' | 'video'; url: string; title?: string } | null>(null);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (layout !== 'slider') return;
+      if (e.key === 'Escape') setModalItem(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const openModal = (type: 'image' | 'video', url: string, title?: string) => {
+    setModalItem({ type, url, title });
+  };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (layout !== 'cards') return;
       if (e.key === 'ArrowRight') paginate(1);
       if (e.key === 'ArrowLeft') paginate(-1);
     };
@@ -194,10 +116,47 @@ const Menu = () => {
     }
   };
 
+  // Per-item override map: map item id or name -> filename (image or video) or a direct URL.
+  // Add entries here for items whose media should differ from the default `menuItems` media.
+  // Example: { 'adongo-1': 'adongo-primary.jpg', 'Rolex': 'images/rolextop.jpg' }
+  const imageOverrides: Record<string, string> = {
+    // 'example-item-id': 'specific-file.jpg',
+    // 'Some Dish Name': 'special-image.png'
+  };
+
+  // Resolve media for a given menu item, preferring overrides. Returns { type, url }.
+  const resolveMedia = (it: MenuItem): { type: 'video' | 'image'; url: string } => {
+    // override by id first, then by name
+    const overrideKeyById = it.id && imageOverrides[it.id as unknown as string];
+    const overrideKeyByName = imageOverrides[it.name];
+    const override = overrideKeyById || overrideKeyByName;
+
+    if (override) {
+      // if override ends with .mp4 treat as video; otherwise image
+      if (/\.mp4$/i.test(override)) {
+        // return a quality-specific asset if possible
+        const url = qualityAssetUrl(override, videoQuality) || assetUrl(override);
+        return { type: 'video', url };
+      }
+      // maybe the override is a full URL or a local filename
+      if (/^https?:\/\//i.test(override) || override.startsWith('/')) {
+        return { type: 'image', url: override };
+      }
+      return { type: 'image', url: assetUrl(override) };
+    }
+
+    // fallback to item.media
+    if (it.media && it.media.toLowerCase().endsWith('.mp4')) {
+      return { type: 'video', url: qualityAssetUrl(it.media, videoQuality) };
+    }
+    return { type: 'image', url: assetUrl(it.media || 'local-food.jpeg') };
+  };
+
   // small reusable card used in non-slider layouts
   const Card = ({ it }: { it: MenuItem }) => {
-    const src = it.media ? qualityAssetUrl(it.media, videoQuality) : assetUrl('local-food.jpeg');
-    const video = it.media ? it.media.toLowerCase().endsWith('.mp4') : false;
+    const resolved = resolveMedia(it);
+    const src = resolved.url;
+    const video = resolved.type === 'video';
     return (
       <motion.div
         layout
@@ -207,16 +166,22 @@ const Menu = () => {
       >
         <div className="rounded-lg overflow-hidden mb-3 bg-gray-100 dark:bg-gray-700">
           {video ? (
-            <video src={src} muted loop playsInline autoPlay className="w-full h-44 object-cover" />
+            <button onClick={() => openModal('video', src, it.name)} className="w-full h-44 block">
+              <video src={src} muted loop playsInline autoPlay className="w-full h-44 object-cover" aria-label={`${it.name} preview`} />
+            </button>
           ) : (
-            <img src={src} alt={it.name} className="w-full h-44 object-cover" />
+            <button onClick={() => openModal('image', src, it.name)} className="w-full h-44 block">
+              <img src={src} alt={it.name} className="w-full h-44 object-cover" />
+            </button>
           )}
         </div>
         <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-100">{it.name}</h3>
         <p className="text-sm text-gray-500 dark:text-gray-300 my-2">{it.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-cyan-500 font-bold">UGX {it.price.toLocaleString()}</span>
-          <span className="text-sm px-2 py-1 rounded-full text-violet-700 dark:text-violet-100 bg-violet-100 dark:bg-violet-700/20">{it.category}</span>
+          <span className="text-sm px-2 py-1 rounded-full text-violet-700 dark:text-violet-100 bg-violet-100 dark:bg-violet-700/20">
+            {it.category}
+          </span>
         </div>
       </motion.div>
     );
@@ -317,18 +282,32 @@ const Menu = () => {
                   </div>
 
                   <div className="w-full md:w-1/2 h-[420px] rounded-xl overflow-hidden bg-white/60 dark:bg-gray-800/60 flex items-center justify-center">
-                    <Canvas shadows>
-                      <ambientLight intensity={0.9} />
-                      <directionalLight position={[2, 5, 2]} intensity={0.8} />
-                      <PerspectiveCamera makeDefault position={[0, 1.4, 3]} />
-                      {/* keep OrbitControls but locked for consistent UX */}
-                      <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                      {item.media && item.media.toLowerCase().endsWith('.mp4') ? (
-                        <VideoFoodCard filename={item.media} quality={videoQuality} />
-                      ) : (
-                        <ImageFoodCard src={assetUrl(item.media || 'local-food.jpeg')} />
-                      )}
-                    </Canvas>
+                    {
+                      // use resolveMedia for slider content. For video we'll render a large native <video>
+                      // element instead of the Canvas (better autoplay & controls). For images keep the Canvas.
+                    }
+                    {(() => {
+                      const r = resolveMedia(item);
+                      if (r.type === 'video') {
+                        return (
+                          <div className="w-full h-full flex items-center justify-center bg-black">
+                            <button onClick={() => openModal('video', r.url, item.name)} className="w-full h-full">
+                              <video src={r.url} muted loop playsInline autoPlay controls={false} className="w-full h-full object-cover" />
+                            </button>
+                          </div>
+                        );
+                      }
+                      return (
+                        <Canvas shadows dpr={[1, 2]} style={{ width: '100%', height: '100%' }}>
+                          <ambientLight intensity={0.9} />
+                          <directionalLight position={[2, 5, 2]} intensity={0.8} />
+                          <PerspectiveCamera makeDefault fov={45} position={[0, 1.6, 4]} />
+                          {/* keep OrbitControls but locked for consistent UX */}
+                          <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
+                          <ImageFoodCard src={r.url} />
+                        </Canvas>
+                      );
+                    })()}
                   </div>
                 </motion.article>
               </AnimatePresence>
@@ -345,23 +324,30 @@ const Menu = () => {
 
           {layout === 'grid' && (
             <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {pageItems.map((it) => (
-                <motion.div key={it.id} whileHover={{ y: -4 }} className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-100 dark:border-gray-700">
-                  <div className="flex gap-3 items-center">
-                    <div className="w-28 h-20 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700">
-                      {it.media && it.media.toLowerCase().endsWith('.mp4') ? (
-                        <video src={qualityAssetUrl(it.media, videoQuality)} muted loop playsInline autoPlay className="w-full h-full object-cover" />
-                      ) : (
-                        <img src={assetUrl(it.media || 'local-food.jpeg')} alt={it.name} className="w-full h-full object-cover" />
-                      )}
+              {pageItems.map((it) => {
+                const r = resolveMedia(it);
+                return (
+                  <motion.div key={it.id} whileHover={{ y: -4 }} className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="flex gap-3 items-center">
+                      <div className="w-28 h-20 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700">
+                        {r.type === 'video' ? (
+                          <button onClick={() => openModal('video', r.url, it.name)} className="w-full h-full">
+                            <video src={r.url} muted loop playsInline autoPlay className="w-full h-full object-cover" />
+                          </button>
+                        ) : (
+                          <button onClick={() => openModal('image', r.url, it.name)} className="w-full h-full">
+                            <img src={r.url} alt={it.name} className="w-full h-full object-cover" />
+                          </button>
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">{it.name}</h4>
+                        <div className="text-sm text-gray-500 dark:text-gray-300">UGX {it.price.toLocaleString()}</div>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">{it.name}</h4>
-                      <div className="text-sm text-gray-500 dark:text-gray-300">UGX {it.price.toLocaleString()}</div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </motion.div>
           )}
 
@@ -390,11 +376,21 @@ const Menu = () => {
                     <tr key={it.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                       <td className="px-6 py-4 flex items-center gap-3">
                         <div className="w-16 h-12 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700">
-                          {it.media && it.media.toLowerCase().endsWith('.mp4') ? (
-                            <video src={qualityAssetUrl(it.media, videoQuality)} muted loop playsInline autoPlay className="w-full h-full object-cover" />
-                          ) : (
-                            <img src={assetUrl(it.media || 'local-food.jpeg')} alt={it.name} className="w-full h-full object-cover" />
-                          )}
+                            {(() => {
+                              const r = resolveMedia(it);
+                              if (r.type === 'video') {
+                                return (
+                                  <button onClick={() => openModal('video', r.url, it.name)} className="w-full h-full">
+                                    <video src={r.url} muted loop playsInline autoPlay className="w-full h-full object-cover" />
+                                  </button>
+                                );
+                              }
+                              return (
+                                <button onClick={() => openModal('image', r.url, it.name)} className="w-full h-full">
+                                  <img src={r.url} alt={it.name} className="w-full h-full object-cover" />
+                                </button>
+                              );
+                            })()}
                         </div>
                         <div>
                           <div className="font-medium text-gray-900 dark:text-gray-100">{it.name}</div>
@@ -424,6 +420,22 @@ const Menu = () => {
             Next
           </button>
         </div>
+        {/* Modal viewer for full-size media */}
+        {modalItem && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" role="dialog" aria-modal="true" onClick={() => setModalItem(null)}>
+            <div className="relative max-w-4xl w-full mx-4" onClick={(e) => e.stopPropagation()}>
+              <button aria-label="Close preview" onClick={() => setModalItem(null)} className="absolute right-2 top-2 z-50 text-white bg-black/40 rounded-full p-2">✕</button>
+              <div className="w-full bg-black rounded-md overflow-hidden">
+                {modalItem.type === 'image' ? (
+                  <img src={modalItem.url} alt={modalItem.title || 'Preview'} className="w-full h-[80vh] object-contain bg-black" />
+                ) : (
+                  <video src={modalItem.url} controls className="w-full h-[80vh] object-contain bg-black" />
+                )}
+              </div>
+              {modalItem.title && <div className="text-center text-white mt-2">{modalItem.title}</div>}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

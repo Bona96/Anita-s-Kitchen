@@ -17,9 +17,9 @@ export const menuItems: MenuItem[] = [
     name: 'Pizza (small)',
     description: '',
     price: 30000,
-    category: 'Exotic',
+    category: 'exotic',
     drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
+    color: 'from-black/30 to-gray-200',
     media: 'pizza-video.mp4'
   },
   {
@@ -27,9 +27,9 @@ export const menuItems: MenuItem[] = [
     name: 'Pizza (large)',
     description: '',
     price: 45000,
-    category: 'Exotic',
+    category: 'exotic',
     drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
+    color: 'from-red-100 to-violet-200',
     media: 'pizza-video.mp4'
   },
   {
@@ -37,20 +37,20 @@ export const menuItems: MenuItem[] = [
     name: 'Boiled Chicken',
     description: 'Served with either irish, cassava or smoked matooke and coleslaws.',
     price: 25000,
-    category: 'Local food',
-    drinks: ['Chapatti', 'Soda'],
-    color: 'from-orange-100 to-orange-50',
+    category: 'local food',
+    drinks: ['Water', 'Soda'],
+    color: 'from-cyan-100 to-violet-200',
     media: 'boiled-chicken.jpeg'
   },
   {
     id: 4,
-    name: 'Boiled Meat',
+    name: 'Beef',
     description: 'Served with either irish, cassava or smoked matooke and coleslaws.',
     price: 20000,
-    category: 'Local food',
+    category: 'local food',
     drinks: ['Soda', 'Posho'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'all-foods-and-fish.jpeg'
+    color: 'from-gray-100 to-red-200',
+    media: 'Beef.jpeg'
   },
   {
     id: 5,
@@ -59,137 +59,77 @@ export const menuItems: MenuItem[] = [
     price: 35000,
     category: 'On the grill',
     drinks: ['Soda', 'Beer'],
-    color: 'from-orange-100 to-orange-50',
+    color: 'from-blue-100 to-violet-200',
     media: 'grilled-chicken.jpeg'
   },
   {
     id: 6,
-    name: 'Pilau & Chicken',
-    description: '',
-    price: 20000,
-    category: 'Quick meals',
-    drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'jollof-rice.jpeg'
-  },
-  {
-    id: 7,
-    name: 'Pilau & Beef',
-    description: '',
-    price: 15000,
-    category: 'Quick meals',
-    drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'jollof-rice.jpeg'
-  },
-  {
-    id: 8,
-    name: 'All local foods',
-    description: 'All local foods with prefered sauce (except fish sauce)',
-    price: 20000,
+    name: 'local foods',
+    description: 'local foods with fish, beef, chicken, goat meat.',
+    price: 30000,
     category: 'local food',
-    drinks: ['Soda'],
-    color: 'from-orange-100 to-orange-50',
+    drinks: ['Soda', 'Water'],
+    color: 'from-gray-100 to-indigo-200',
     media: 'local-food.jpeg'
   },
   {
-    id: 9,
-    name: 'All local foods',
-    description: 'All local foods with fish sauce',
-    price: 30000,
-    category: 'local food',
-    drinks: ['Soda'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'all-foods-and-fish.jpeg'
-  },
-  {
-    id: 10,
-    name: 'Goats meat (Roasted)',
-    description: 'Served with coleslaws',
-    price: 20000,
-    category: 'local food',
-    drinks: ['Soda', 'Beer'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'goats-meat-lusania.jpeg'
-  },
-  {
-    id: 11,
-    name: 'Goats meat (Boiled)',
-    description: 'Served with coleslaws',
-    price: 20000,
-    category: 'local food',
-    drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'goats-meat-lusania.jpeg'
-  },
-  {
-    id: 12,
+    id: 7,
     name: 'Black pepper chicken breast',
     description: 'Served with coleslaws',
     price: 20000,
-    category: 'local food',
+    category: 'Exotic',
     drinks: ['Soda'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'fried-chicken.jpeg'
+    color: 'from-cyan-100 to-cyan-200',
+    media: 'Black-pepper-chicken-breast.jpeg'
   },
   {
-    id: 13,
-    name: 'Jollof rice',
+    id: 8,
+    name: 'Jollof rice with chicken',
     description: 'Served with coleslaws',
     price: 15000,
     category: 'local food',
     drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'jollof-rice.jpeg'
+    color: 'from-cyan-100 to-blue-200',
+    media: 'jollof-rice-with-chicken-and-plantain.jpeg'
   },
   {
-    id: 14,
-    name: 'Jollof rice with chicken',
+    id: 9,
+    name: 'Jollof rice with Pork',
     description: 'Served with coleslaws',
     price: 25000,
     category: 'local food',
     drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'jollof-rice.jpeg'
+    color: 'from-indigo-100 to-gray-200',
+    media: 'jollof-rice-with-pork.jpeg'
   },
   {
-    id: 15,
-    name: 'Jollof rice with pork',
+    id: 10,
+    name: 'Fish',
     description: 'Served with coleslaws',
-    price: 35000,
-    category: 'local food',
-    drinks: ['Soda', 'Beer'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'jollof-rice.jpeg'
-  },
-  {
-    id: 16,
-    name: 'Jollof rice with beef',
-    description: 'Served with coleslaws',
-    price: 25000,
-    category: 'local food',
-    drinks: ['Soda', 'Water'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'jollof-rice.jpeg'
-  },
-  {
-    id: 17,
-    name: 'Boiled offals',
-    description: 'Served with coleslaws',
-    price: 20000,
-    category: 'local food',
+    price: 30000,
+    category: 'Exotic',
     drinks: ['Soda'],
-    color: 'from-orange-100 to-orange-50',
-    media: 'all-foods-and-fish.jpeg'
+    color: 'from-cyan-100 to-violet-200',
+    media: 'fish.jpeg'
   },
   {
-    id: 18,
+    id: 11,
     name: 'Chicken wings',
     description: 'Served with coleslaws',
     price: 20000,
     category: 'snacking',
     drinks: ['Soda'],
-    color: 'from-orange-100 to-orange-50',
+    color: 'from-blue-100 to-gray-200',
     media: 'chicken-wings.jpeg'
+  },
+  {
+    id: 12,
+    name: 'Grilled Chicken with Irish',
+    description: 'Served with coleslaws',
+    price: 20000,
+    category: 'on the grill',
+    drinks: ['Soda', 'Water'],
+    color: 'from-blue-100 to-gray-200',
+    media: 'grilled-chicken-with-irish.jpeg'
   },
 ];

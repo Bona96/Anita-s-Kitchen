@@ -2,13 +2,13 @@ import { motion } from "framer-motion"
 import React, { useMemo } from "react";
 import { FaUtensils, FaDrumstickBite, FaFish } from 'react-icons/fa';
 // import available food images
-import jollof from "../../assets/media/jollof-rice.jpeg";
+import jollof from "../../assets/media/jollof-rice-with-chicken-and-plantain.jpeg";
 import boiled from "../../assets/media/boiled-chicken.jpeg";
 import grilled from "../../assets/media/grilled-chicken.jpeg";
 import wings from "../../assets/media/chicken-wings.jpeg";
 import roasted from "../../assets/media/roasted-chicken.jpeg";
 import localFood from "../../assets/media/local-food.jpeg";
-import fish from "../../assets/media/all-foods-and-fish.jpeg";
+import fish from "../../assets/media/fish.jpeg";
 
 const ICONS = [FaUtensils, FaDrumstickBite, FaFish];
 

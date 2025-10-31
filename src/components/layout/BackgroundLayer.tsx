@@ -107,7 +107,7 @@ const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ variant = 'hero', col
         const age = activeAt ? Math.max(0, Date.now() - activeAt) : Infinity;
         const intensity = Math.max(0, 1 - age / DURATION);
         const style: React.CSSProperties = {
-          opacity: 0.06 + 0.5 * intensity,
+          opacity: 0.00 + 0.0 * intensity,
           transform: `scale(${1 + 0.08 * intensity})`,
           transition: 'opacity 0.9s ease-out, transform 0.9s ease-out',
           backgroundColor: `var(${baseVar})`,
