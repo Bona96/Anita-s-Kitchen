@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react';
 import BackgroundLayer from './BackgroundLayer';
 
 const Footer = () => {
@@ -27,15 +28,15 @@ const Footer = () => {
         </div>
 
         <div className="md:col-span-1">
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">Opening Hours</h4>
-          <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-            <li>Mon - Fri: 9:00 AM - 9:00 PM</li>
-            <li>Saturday: 10:00 AM - 10:00 PM</li>
-            <li>Sunday: 10:00 AM - 8:00 PM</li>
-          </ul>
+          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">From 09:00am - 08:00pm </h4>
+          <p className="text-2xl text-gray-600 dark:text-gray-300 space-y-1">
+            Delivery On Order!
+          </p>
 
           <div className="mt-6">
-            <a href="#contact" className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-cyan-700 text-white px-4 py-2 rounded-md shadow">Contact us</a>
+            <a href="#contact" className="inline-flex items-center gap-2 bg-linear-to-r from-cyan-500 to-cyan-700 text-white px-4 py-2 rounded-md shadow">
+              Order now <ArrowRight size={16} />
+            </a>
           </div>
         </div>
 
