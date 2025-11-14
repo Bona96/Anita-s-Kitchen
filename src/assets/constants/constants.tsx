@@ -132,4 +132,14 @@ export const menuItems: MenuItem[] = [
     color: 'from-blue-100 to-gray-200',
     media: 'grilled-chicken-with-irish.jpeg'
   },
+  {
+    id: 13,
+    name: 'Chips & Chicken',
+    description: 'Served with coleslaws',
+    price: 20000,
+    category: 'on the grill',
+    drinks: ['Soda', 'Water'],
+    color: 'from-blue-100 to-gray-200',
+    media: 'anita-s-kitchen-chips-and-chicken.jpg'
+  },
 ];
