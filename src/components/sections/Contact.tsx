@@ -39,7 +39,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <section id="contact" className="relative py-20 bg-linear-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <BackgroundLayer variant="contact" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -91,7 +91,7 @@ const Contact = () => {
             <button
               type="submit"
               disabled={status.type === 'sending'}
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-cyan-700 text-white px-6 py-3 rounded-full hover:opacity-95 transition disabled:opacity-60"
+              className="inline-flex items-center gap-3 bg-linear-to-r from-cyan-500 to-cyan-700 text-white px-6 py-3 rounded-full hover:opacity-95 transition disabled:opacity-60"
             >
               {status.type === 'sending' ? 'Sending...' : 'Send Message'}
             </button>

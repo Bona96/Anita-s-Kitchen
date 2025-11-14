@@ -3,12 +3,12 @@ import BackgroundLayer from './BackgroundLayer';
 
 const Footer = () => {
   return (
-    <footer className="relative mt-12 border-t border-gray-200 dark:border-gray-800 bg-gradient-to-r from-gray-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800">
+    <footer className="relative mt-12 border-t border-gray-200 dark:border-gray-800 bg-linear-to-r from-gray-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800">
       <BackgroundLayer variant="footer" />
       <div className="max-w-6xl mx-auto py-12 px-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
         <div className="md:col-span-1">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-600 shadow-lg flex items-center justify-center text-white font-bold">A</div>
+            <div className="w-12 h-12 rounded-lg bg-linear-to-br from-cyan-500 to-violet-600 shadow-lg flex items-center justify-center text-white font-bold">A</div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Anita's Kitchen</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">Traditional flavours, freshly prepared.</p>

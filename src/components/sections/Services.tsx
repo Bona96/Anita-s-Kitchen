@@ -66,7 +66,7 @@ const Services = () => {
           {/* right: content */}
           <motion.div variants={item} className="text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 leading-tight mb-3">
-              <span className="inline-block bg-clip-text text-transparent bg-linear-to-r from-violet-300 to-cyan-500">My Services</span>
+              <span className="inline-block bg-clip-text text-transparent bg-linear-to-r from-violet-500 to-cyan-500">My Services</span>
               <span className="ml-2 text-2xl">😊</span>
             </h2>
             <motion.p variants={item} className="text-lg text-gray-800 dark:text-gray-200 mb-4">
@@ -83,7 +83,12 @@ const Services = () => {
             </motion.ul>
 
             <motion.div variants={item} className="flex items-center gap-4 justify-center md:justify-start">
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-violet-600 text-white font-semibold shadow-lg focus:outline-none focus:ring-4 focus:ring-rose-200">
+              <motion.button 
+                whileHover={{ scale: 1.03 }} 
+                whileTap={{ scale: 0.98 }} 
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 hover:bg-violet-600 text-white font-semibold shadow-lg focus:outline-none focus:ring-4 focus:ring-rose-200"
+                onClick={() => { window.location.href = '#contact'; }}
+              >
                 Book a Catering
               </motion.button>
               <motion.a whileHover={{ x: 4 }} className="text-sm text-gray-700 dark:text-gray-200 hover:underline" href="#contact">
