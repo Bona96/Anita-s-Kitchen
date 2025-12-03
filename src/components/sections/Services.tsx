@@ -3,6 +3,8 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import type { Mesh } from 'three';
 import { useRef } from 'react';
+import Anita from '../../assets/media/anita-ceo.jpg';
+import TiltCard from "../layout/TiltCard.tsx";
 
 const PlateModel = () => {
   const ref = useRef<Mesh | null>(null);
@@ -53,13 +55,7 @@ const Services = () => {
           {/* left: 3D plate */}
           <motion.div variants={item} className="w-full flex items-center justify-center">
             <div className="w-full max-w-lg h-80 md:h-[420px] rounded-2xl p-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm shadow-2xl border border-white/30">
-              <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 1.8, 4], fov: 45 }}>
-                <ambientLight intensity={0.9} />
-                <directionalLight position={[2, 5, 2]} intensity={0.8} />
-                <PerspectiveCamera makeDefault position={[0, 1.8, 4]} fov={45} />
-                <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-                <PlateModel />
-              </Canvas>
+                <TiltCard imageSrc={Anita} altText="CEO" />
             </div>
           </motion.div>
 

@@ -231,7 +231,7 @@ const Menu = () => {
                 <option value="1080">1080p</option>
               </select>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               <button aria-label="Previous" onClick={() => paginate(-1)} className="p-2 rounded-full bg-white dark:bg-gray-800 shadow border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:scale-105 transition">
                 ‹
               </button>

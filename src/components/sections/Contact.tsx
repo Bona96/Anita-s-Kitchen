@@ -53,7 +53,7 @@ const Contact = () => {
           <p className="text-gray-600 dark:text-gray-300">Place your order now, Send us a message and we'll get back to you shortly.</p>
         </motion.div>
 
-        {/* Map
+        {/* Map.tsx
         <div className="mb-8 rounded-2xl overflow-hidden shadow-lg">
           <iframe
             title="Anita's Kitchen location"

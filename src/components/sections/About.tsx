@@ -1,19 +1,21 @@
 import { motion } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import type { Mesh } from 'three';
-import { useRef } from 'react';
+// import { Canvas } from '@react-three/fiber';
+// import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+// import type { Mesh } from 'three';
+// import { useRef } from 'react';
 import BackgroundLayer from '../layout/BackgroundLayer';
+import Anita from "../../assets/media/anita-ceo-at-the-balcony.jpg";
+import TiltCard from "../layout/TiltCard.tsx";
 
-const PlateModel = () => {
-  const ref = useRef<Mesh>(null);
-  return (
-    <mesh ref={ref} rotation={[Math.PI / 8, 0.4, 0]} position={[0, -0.5, 0]}>
-      <cylinderGeometry args={[1.8, 1.8, 0.2, 64]} />
-      <meshStandardMaterial color="#fffaf0" metalness={0.2} roughness={0.6} />
-    </mesh>
-  );
-};
+// const PlateModel = () => {
+//   const ref = useRef<Mesh>(null);
+//   return (
+//     <mesh ref={ref} rotation={[Math.PI / 8, 0.4, 0]} position={[0, -0.5, 0]}>
+//       <cylinderGeometry args={[1.8, 1.8, 0.2, 64]} />
+//       <meshStandardMaterial color="#fffaf0" metalness={0.2} roughness={0.6} />
+//     </mesh>
+//   );
+// };
 
 const About = () => {
   return (
@@ -39,17 +41,18 @@ const About = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
-            className="w-full h-72 rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-gray-800"
+            className="flex items-center justify-center w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-gray-800"
             viewport={{ once: true }}
           >
-            {/* 3D placeholder using react-three for a decorative plate. If you prefer Sketchfab, replace this block with their embed iframe. */}
-            <Canvas className="w-full h-full">
-              <ambientLight intensity={0.6} />
-              <directionalLight position={[5, 5, 5]} intensity={1} />
-              <PerspectiveCamera makeDefault position={[0, 1.5, 3]} />
-              <OrbitControls enableZoom={false} enablePan={false} />
-              <PlateModel />
-            </Canvas>
+            <TiltCard imageSrc={Anita} altText="CEO" />
+              {/* 3D placeholder using react-three for a decorative plate. If you prefer Sketchfab, replace this block with their embed iframe. */}
+            {/*<Canvas className="w-full h-full">*/}
+            {/*  <ambientLight intensity={0.6} />*/}
+            {/*  <directionalLight position={[5, 5, 5]} intensity={1} />*/}
+            {/*  <PerspectiveCamera makeDefault position={[0, 1.5, 3]} />*/}
+            {/*  <OrbitControls enableZoom={false} enablePan={false} />*/}
+            {/*  <PlateModel />*/}
+            {/*</Canvas>*/}
           </motion.div>
         </div>
       </div>
