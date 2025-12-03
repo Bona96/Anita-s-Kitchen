@@ -3,6 +3,7 @@ import type { Variants } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useState } from 'react';
 import { useDarkMode } from '../../contexts/DarkModeContext';
+import Logo from "./Logo.tsx";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,15 +43,8 @@ const Navbar = () => {
       className="fixed w-full z-50 backdrop-blur-sm bg-linear-to-b from-violet-300/70 to-cyan-400/30 dark:from-red-950/30 dark:to-cyan-500/30 shadow-md"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <motion.div
-            whileHover={{ scale: 1.04, rotateX: -4 }}
-            className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-red-950 via-cyan-500 to-violet-500"
-            style={{ WebkitBackgroundClip: 'text' }}
-          >
-            Anita's Kitchen
-          </motion.div>
-
+        <div className="flex items-center justify-between h-20">
+          <Logo />
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
             {['Home', 'Menu', 'About', 'Testimonials', 'Contact'].map((item) => (
