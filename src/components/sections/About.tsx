@@ -29,8 +29,8 @@ const About = () => {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">About Anita</h2>
-            <p className="text-lg text-gray-800 dark:text-gray-200 mb-4">
+            <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-linear-to-r from-violet-500 to-cyan-500 dark:from-indigo-100 dark:to-cyan-400 mb-4">About Anita</h2>
+            <p className="text-lg text-gray-800 dark:text-white mb-4">
               Anita's Kitchen is where heart and flavour meet. Family recipes, fresh
               ingredients, and a love for sharing meals made with care.
             </p>

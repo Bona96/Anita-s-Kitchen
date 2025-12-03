@@ -62,7 +62,7 @@ const Services = () => {
           {/* right: content */}
           <motion.div variants={item} className="text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 leading-tight mb-3">
-              <span className="inline-block bg-clip-text text-transparent bg-linear-to-r from-violet-500 to-cyan-500">My Services</span>
+              <span className="inline-block bg-clip-text text-transparent bg-linear-to-r from-violet-500 to-cyan-500 dark:from-violet-300 dark:to-cyan-300">My Services</span>
               <span className="ml-2 text-2xl">😊</span>
             </h2>
             <motion.p variants={item} className="text-lg text-gray-800 dark:text-gray-200 mb-4">
