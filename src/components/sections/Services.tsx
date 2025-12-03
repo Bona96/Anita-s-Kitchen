@@ -1,29 +1,6 @@
 import { motion } from 'framer-motion';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import type { Mesh } from 'three';
-import { useRef } from 'react';
 import Anita from '../../assets/media/anita-ceo.jpg';
 import TiltCard from "../layout/TiltCard.tsx";
-
-const PlateModel = () => {
-  const ref = useRef<Mesh | null>(null);
-  // subtle float + slow rotation
-  useFrame(({ clock }) => {
-    if (!ref.current) return;
-    const t = clock.getElapsedTime();
-    ref.current.rotation.y = Math.sin(t * 0.15) * 0.25 + 0.4;
-    ref.current.rotation.x = Math.PI / 8 + Math.sin(t * 0.08) * 0.02;
-    ref.current.position.y = -0.5 + Math.sin(t * 1.2) * 0.03;
-  });
-
-  return (
-    <mesh ref={ref} rotation={[Math.PI / 8, 0.4, 0]} position={[0, -0.5, 0]}>
-      <cylinderGeometry args={[1.8, 1.8, 0.2, 64]} />
-      <meshStandardMaterial color="#fffaf0" metalness={0.25} roughness={0.5} />
-    </mesh>
-  );
-};
 
 const Services = () => {
   // motion variants
