@@ -86,7 +86,7 @@ export const menuItems: MenuItem[] = [
     id: 8,
     name: 'Jollof rice with chicken',
     description: 'Served with coleslaws',
-    price: 15000,
+    price: 20000,
     category: 'local food',
     drinks: ['Soda', 'Water'],
     color: 'from-cyan-100 to-blue-200',
